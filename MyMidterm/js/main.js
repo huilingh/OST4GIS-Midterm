@@ -1,8 +1,7 @@
-var mapOpts = {
-  center: [40.000, -75.1090],
-  zoom: 11
-};
-var map = L.map('map', mapOpts);
+var map = L.map('map', {
+  center: [40.1000, -75.1090],
+  zoom: 9
+});
 
 var Stamen_TonerLite = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
   attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -12,8 +11,14 @@ var Stamen_TonerLite = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{
   ext: 'png'
 }).addTo(map);
 
-var myMarker = {
-  radius: 5,
+var Line = {
+  "color": "#5aa6e0",
+  "weight": 2,
+  "opacity": 0.8
+}
+
+var BikeMarker = {
+  radius: 3,
   fillColor: "#c42b2b",
   color: "#ffffff",
   weight: 1,
@@ -21,9 +26,20 @@ var myMarker = {
   fillOpacity: 0.8
 }
 
+var PedMarker = {
+  radius: 3,
+  fillColor: "#ffee00",
+  color: "#ffffff",
+  weight: 1,
+  opacity: 1,
+  fillOpacity: 0.8
+}
+
+
 // get data
-var trails = "https://raw.githubusercontent.com/huilingh/OST4GIS-Midterm/blob/master/MyMidterm/data/DVRPC_Circuit_Trails.geojson"
-var tracts = "https://raw.githubusercontent.com/huilingh/philly-school/master/Census_Tracts_2010.geojson"
+var trail = "https://raw.githubusercontent.com/huilingh/OST4GIS-Midterm/master/MyMidterm/data/DVRPC_Circuit_Trails.geojson"
+var bike = "https://raw.githubusercontent.com/huilingh/OST4GIS-Midterm/master/MyMidterm/data/DVRPC_Bicycle_Counts.geojson"
+var pedestrian = "https://raw.githubusercontent.com/huilingh/OST4GIS-Midterm/master/MyMidterm/data/DVRPC_Pedestrian_Counts.geojson"
 
 // parse data
 var parse = function(res) {return JSON.parse(res)};
@@ -54,7 +70,7 @@ var filter3 = function(feature) {
 }
 
 // the code execute
-$(document).ready(function() {$.ajax(trails).done(function(data){
+$(document).ready(function() {$.ajax(trail).done(function(data){
 
   $('button.previous1').hide();
   $('button.previous2').hide();
@@ -65,36 +81,31 @@ $(document).ready(function() {$.ajax(trails).done(function(data){
   $('button.next3').hide();
   $('button.next4').hide();
 
+  // page 1: load circuits
   var parsedTrails = parse(data);
   Trails = L.geoJson(parsedTrails, {
-    // style:
+    style: Line
     // filter:
   }).addTo(map)
 
-  $.ajax(trails).done(function(data) {
-
-    allSchools = L.geoJson(parsedTrails, {
-      pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, myMarker);},
-      onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
-      // style:
-      // filter:
-    }).addTo(map).eachLayer(eachFeatureFunction);
-
     // turn to page 2
     $('button.next1').click(function(){
-      map.removeLayer(allSchools);
       $('button.previous1').show();
       $('button.next2').show();
       $('button.next1').hide();
-      privateSchools = L.geoJson(parsedSchools, {
-        pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, myMarker);},
-        onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
-        // style:
-        filter: filter1
-      }).addTo(map).eachLayer(eachFeatureFunction);
+      // load bike counts
+      $.ajax(bike).done(function(data){
+        var parsedBike = parse(data);
+        Bike = L.geoJson(parsedBike, {
+          pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, BikeMarker);},
+          // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
+          // style:
+          // filter: filter1
+        }).addTo(map).eachLayer(eachFeatureFunction);
+      })
     })
 
-    //return to page 1
+    //return to page 1 (to be continued)
     $('button.previous1').click(function(){
       map.removeLayer(privateSchools);
       $('button.previous1').hide();
@@ -110,20 +121,24 @@ $(document).ready(function() {$.ajax(trails).done(function(data){
 
     // turn to page 3
     $('button.next2').click(function(){
-      map.removeLayer(privateSchools);
+      map.removeLayer(Bike);
       $('button.previous1').hide();
       $('button.previous2').show();
       $('button.next3').show();
       $('button.next2').hide();
-      districtSchools = L.geoJson(parsedSchools, {
-        pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, myMarker);},
-        onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
-        // style:
-        filter: filter2
-      }).addTo(map).eachLayer(eachFeatureFunction);
+      // load pedestrian counts
+      $.ajax(pedestrian).done(function(data){
+        var parsedPedestrian = parse(data);
+        Pedestrian = L.geoJson(parsedPedestrian, {
+          pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, PedMarker);},
+          // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
+          // style:
+          // filter: filter1
+        }).addTo(map).eachLayer(eachFeatureFunction);
+      })
     })
 
-    //return to page 2
+    //return to page 2 (to be continued)
     $('button.previous2').click(function(){
       map.removeLayer(districtSchools);
       $('button.previous1').show();
@@ -140,20 +155,34 @@ $(document).ready(function() {$.ajax(trails).done(function(data){
 
     // turn to page 4
     $('button.next3').click(function(){
-      map.removeLayer(districtSchools);
+      map.removeLayer(Pedestrian);
       $('button.previous2').hide();
       $('button.previous3').show();
       $('button.next4').show();
       $('button.next3').hide();
-      archdioceseSchools = L.geoJson(parsedSchools, {
-        pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, myMarker);},
-        onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
-        // style:
-        filter: filter3
-      }).addTo(map).eachLayer(eachFeatureFunction);
+      //load bike counts and pedestrian counts
+      $.ajax(bike).done(function(data){
+        var parsedBike = parse(data);
+        $.ajax(pedestrian).done(function(data){
+          var parsedPedestrian = parse(data);
+          Bike = L.geoJson(parsedBike, {
+            pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, BikeMarker);},
+            // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
+            // style:
+            // filter: filter1
+          }).addTo(map).eachLayer(eachFeatureFunction);
+
+          Pedestrian = L.geoJson(parsedPedestrian, {
+            pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, PedMarker);},
+            // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
+            // style:
+            // filter: filter1
+          }).addTo(map).eachLayer(eachFeatureFunction);
+        })
+      })
     })
 
-    //return to page 3
+    //return to page 3 (to be continued)
     $('button.previous3').click(function(){
       map.removeLayer(districtSchools);
       $('button.previous2').show();
@@ -168,9 +197,37 @@ $(document).ready(function() {$.ajax(trails).done(function(data){
       }).addTo(map).eachLayer(eachFeatureFunction);
     })
 
+    // turn to page 5
+    $('button.next3').click(function(){
+      map.removeLayer(Pedestrian);
+      $('button.previous3').hide();
+      $('button.previous4').show();
+      $('button.next4').hide();
+      //zoom to Philadelphia
+      $.ajax(bike).done(function(data){
+        var parsedBike = parse(data);
+        $.ajax(pedestrian).done(function(data){
+          var parsedPedestrian = parse(data);
+          Bike = L.geoJson(parsedBike, {
+            pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, BikeMarker);},
+            // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
+            // style:
+            // filter: filter1
+          }).addTo(map).eachLayer(eachFeatureFunction);
+
+          Pedestrian = L.geoJson(parsedPedestrian, {
+            pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, PedMarker);},
+            // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
+            // style:
+            // filter: filter1
+          }).addTo(map).eachLayer(eachFeatureFunction);
+        })
+      })
+    })
+
   });
 });
-});
+
 
 /* things to do:
 add popup
