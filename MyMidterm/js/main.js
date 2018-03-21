@@ -22,7 +22,7 @@ var myMarker = {
 }
 
 // get data
-var schools = "https://raw.githubusercontent.com/huilingh/philly-school/master/Schools.geojson"
+var trails = "https://raw.githubusercontent.com/huilingh/OST4GIS-Midterm/blob/master/MyMidterm/data/DVRPC_Circuit_Trails.geojson"
 var tracts = "https://raw.githubusercontent.com/huilingh/philly-school/master/Census_Tracts_2010.geojson"
 
 // parse data
@@ -54,24 +54,26 @@ var filter3 = function(feature) {
 }
 
 // the code execute
-$(document).ready(function() {$.ajax(tracts).done(function(data){
-  var parsedTracts = parse(data);
-  $.ajax(schools).done(function(data) {
-    var parsedSchools = parse(data);
-    // Tracts = L.geoJson(parsedTracts, {
-    //
-    // }).addTo(map);
+$(document).ready(function() {$.ajax(trails).done(function(data){
 
-    $('button.previous1').hide();
-    $('button.previous2').hide();
-    $('button.previous3').hide();
-    $('button.previous4').hide();
+  $('button.previous1').hide();
+  $('button.previous2').hide();
+  $('button.previous3').hide();
+  $('button.previous4').hide();
 
-    $('button.next2').hide();
-    $('button.next3').hide();
-    $('button.next4').hide();
+  $('button.next2').hide();
+  $('button.next3').hide();
+  $('button.next4').hide();
 
-    allSchools = L.geoJson(parsedSchools, {
+  var parsedTrails = parse(data);
+  Trails = L.geoJson(parsedTrails, {
+    // style:
+    // filter:
+  }).addTo(map)
+
+  $.ajax(trails).done(function(data) {
+
+    allSchools = L.geoJson(parsedTrails, {
       pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, myMarker);},
       onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
       // style:
