@@ -8,27 +8,105 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <div class="sidebar">
-      <div id="intro">
-        <h1>title</h1>
-        <p class="main">The city of Philadelphia collects garbage from
-        Monday—Friday. The city is divided into 67 regions, each of which is
-        assigned to one of the five days of the week.</p>
-        <p>This application shows each region color coded based on day of
-        week of garbage collection. To get more information about garbage
-        collection for one of the regions, click on that region on the map.</p>
-      </div>
+    <div class="topbar">
+      <h1 class="title">Bicycle and Pedestrian Patterns on DVRPC Circuits</h1>
+      <p class="myname">Designed by Huiling He</p>
     </div>
+
+    <div class="sidebar">
+      <div id="page1">
+        <div id="subtitle">DVRPC Regional Circuit Trails</div>
+        <p id="main">
+          In Great Philadelphia Region, there are a variety of opportunities to create a connected network of
+          multi-use trails. Some of them are long-existing railway and some are parts of grennway corridors
+          alongside the region's creek buffering and park systems. A number of significant trail segments already
+          exist or under construction, but there are still gaps between segments.<br><br>
+          In May 2012, efforts in the Philadelphia Mayor Office were made to fill the gaps and connected the network
+          of these multi-use trails called The Circuits, working with foundations, governments, non-profit organizations,
+          economic development professionals and many other groups. These efforts are valuable in improving the accessibility
+          and promoting multi-use transportation systems on the regional level of the Great Philadelphia.
+          </p>
+        <p class="source">Source: OpendataPhilly</p>
+      </div>
+
+      <div id="page2">
+        <div id="subtitle">Bicycle Counts</div>
+        <p id="main">
+          Each circle reflects the counts of the bicycles on that location, and there are 2258 locations on the map collected
+          by DVRPC. As shown on the map, most of the data are clustered in Philadelphia center city, and locations on the Circuits
+          do have larger number of bicycle counts than locations outside the trails. Some trails extending from Philadelphia center
+          city to the outside regions have higher bicycle counts than other trails, and there are some locations with high bicycle
+          counts do not have good access to the Circuit.<br><br>
+          This map is useful as a reference showing areas and paths with higher biking demands, and potential locations where more
+          bike lanes and biking facilities can be built.
+          </p>
+        <p class="source">Source: OpendataPhilly</p>
+      </div>
+
+      <div id="page3">
+        <div id="subtitle">Pedestrian Counts</div>
+        <p id="main">
+          DVRPC also has the pedestrian counts. Compared to the bicycle counts map which is more randomly scattered, the pedestrian map
+          is more concentrated on the central Philadelphia, and there is a clear path on the map running from the northwest of the region
+          to the central Philadelphia that has higher pedestrian counts than other areas. I don't know the reason why there is an distinctive
+          path on the map, but this is an interesting finding.
+          </p>
+        <p class="source">Source: OpendataPhilly</p>
+      </div>
+
+      <div id="page4">
+        <div id="subtitle">Bicycle and Pedestrian Pattern</div>
+        <p id="main">
+          By overlaying the bicycle and pedestrian counts map, I am trying to find if there is any relationship between the bicycle and pedestrian
+          patterns. I do find that the path with high pedestrian counts has high bicycle counts as well. Although I am not sure where this path leads
+          to, but the data tells me that this path may have great multi-uses (especially the non-motorized) transit demands.<br><br>
+          However, since most of the locations are clustered in Philadelphia center city, it is hard to see the data on this map. Click the "Next"
+          button below to zoom into central city.
+          </p>
+        <p class="source">Source: OpendataPhilly</p>
+      </div>
+
+      <div id="page5">
+        <div id="subtitle">Bicycle and Pedestrian Counts in Philadelphia Center City</div>
+        <p id="main">
+          When zomming in, we can see a more clear pattern. Notably, the northeast area in the center city - the area between Market and Spring Garden Streets,
+          and between the 2nd and 5th Streets, has higher bicycle counts than other areas. The South Broad Street extending from center city to the south,
+          and the Chestnut Street extending to University City, also have high bicycle counts.<br><br>
+          I expect the pedestrian counts in center city to be higher, but the data is not as high as I expected. There are a few locations with high pedestrian
+          counts though, and most of them are near the waterfront, which indicates that the environment of the waterfront areas are good, and people like to
+          go there.
+          </p>
+        <p class="source">Source: OpendataPhilly</p>
+      </div>
+
+      <button class="next1">Next ></button>
+      <button class="next2">Next ></button>
+      <button class="next3">Next ></button>
+      <button class="next4">Next ></button>
+      <button class="previous1">< Previous</button>
+      <button class="previous2">< Previous</button>
+      <button class="previous3">< Previous</button>
+      <button class="previous4">< Previous</button>
+
+    </div>
+
     <div id="map" class="map"></div>
 
-    <button class="next1">Next</button>
-    <button class="next2">Next</button>
-    <button class="next3">Next</button>
-    <button class="next4">Next</button>
-    <button class="previous1">Previous</button>
-    <button class="previous2">Previous</button>
-    <button class="previous3">Previous</button>
-    <button class="previous4">Previous</button>
+    <div id="legend-bike" style="clear: both;">
+      <p class="legend-title">Bicycle Counts</p>
+      <p class="circle1"></p> <p class="legend-text1">less than 113233</p>
+      <p class="circle2"></p> <p class="legend-text2">113233 - 131510</p>
+      <p class="circle3"></p> <p class="legend-text3">more than 113233</p>
+    </div>
+
+    <div id="legend-ped" style="clear: both;">
+      <p class="legend-title">Bicycle Counts</p>
+      <p class="circle4"></p> <p class="legend-text1">less than 129509</p>
+      <p class="circle5"></p> <p class="legend-text2">81653 - 129509</p>
+      <p class="circle6"></p> <p class="legend-text3">more than 113233</p>
+    </div>
+
+
 
     <!-- Javascript Imports -->
     <script src="js/jquery-2.2.0.js"></script>

@@ -30,7 +30,7 @@ var BikeMarker = {
   color: "#ffffff",
   fillColor: "#ffffff",
   opacity: 1,
-  fillOpacity: 1,
+  fillOpacity: 0.5,
 }
 
 var PedMarker = {
@@ -39,7 +39,7 @@ var PedMarker = {
   fillColor: "#ffffff",
   weight: 1,
   opacity: 1,
-  fillOpacity: 1
+  fillOpacity: 0.5
 }
 
 // get data
@@ -65,8 +65,7 @@ var central = function(feature) {
 }
 
 // the code execute
-$(document).ready(function() {$.ajax(trail).done(function(data){
-
+$(document).ready(function() {
   $('button.previous1').hide();
   $('button.previous2').hide();
   $('button.previous3').hide();
@@ -75,6 +74,17 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
   $('button.next2').hide();
   $('button.next3').hide();
   $('button.next4').hide();
+
+  $('#page1').show();
+  $('#page2').hide();
+  $('#page3').hide();
+  $('#page4').hide();
+  $('#page5').hide();
+
+  $('#legend-bike').hide();
+  $('#legend-ped').hide();
+
+  $.ajax(trail).done(function(data){
 
   // page 1: load circuits
   var parsedTrails = parse(data);
@@ -88,8 +98,18 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
       $('button.previous1').show();
       $('button.next2').show();
       $('button.next1').hide();
+
+      $('#page1').hide();
+      $('#page2').show();
+      $('#page3').hide();
+      $('#page4').hide();
+      $('#page5').hide();
+
       // load bike counts
       $.ajax(bike).done(function(data){
+        $('#legend-bike').show();
+        $('#legend-ped').hide();
+
         var parsedBike = parse(data);
 
         _.each(parsedBike.features, function(feature) {
@@ -110,9 +130,9 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
           // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
           style: function(feature) {
             switch (feature.properties.COLOR) {
-              case 1: return {fillColor: "#fd7575"};
-              case 2: return {fillColor: "#df2121"};
-              case 3: return {fillColor: "#a60000"}
+              case 1: return {fillColor: "#fd7575", radius: 3};
+              case 2: return {fillColor: "#df2121", radius: 6};
+              case 3: return {fillColor: "#a60000", radius: 10}
             }
           }
           // filter: filter1
@@ -126,6 +146,16 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
       $('button.previous1').hide();
       $('button.next2').hide();
       $('button.next1').show();
+
+      $('#page1').show();
+      $('#page2').hide();
+      $('#page3').hide();
+      $('#page4').hide();
+      $('#page5').hide();
+
+      $('#legend-bike').hide();
+      $('#legend-ped').hide();
+
       Trails = L.geoJson(parsedTrails, {
         style: Line
         // filter:
@@ -139,8 +169,18 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
       $('button.previous2').show();
       $('button.next3').show();
       $('button.next2').hide();
+
+      $('#page1').hide();
+      $('#page2').hide();
+      $('#page3').show();
+      $('#page4').hide();
+      $('#page5').hide();
+
       // load pedestrian counts
       $.ajax(pedestrian).done(function(data){
+        $('#legend-bike').hide();
+        $('#legend-ped').show();
+
         var parsedPedestrian = parse(data);
 
         _.each(parsedPedestrian.features, function(feature) {
@@ -160,9 +200,9 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
           // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
           style: function(feature) {
             switch (feature.properties.COLOR) {
-              case 1: return {fillColor: "#8d97f3"};
-              case 2: return {fillColor: "#4855d4"};
-              case 3: return {fillColor: "#1a269f"}
+              case 1: return {fillColor: "#8d97f3", radius: 3};
+              case 2: return {fillColor: "#4855d4", radius: 6};
+              case 3: return {fillColor: "#1a269f", radius: 10}
             }
           }
           // filter: filter1
@@ -177,7 +217,17 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
       $('button.previous2').hide();
       $('button.next3').hide();
       $('button.next2').show();
+
+      $('#page1').hide();
+      $('#page2').show();
+      $('#page3').hide();
+      $('#page4').hide();
+      $('#page5').hide();
+
       $.ajax(bike).done(function(data){
+        $('#legend-bike').show();
+        $('#legend-ped').hide();
+
         var parsedBike = parse(data);
 
         _.each(parsedBike.features, function(feature) {
@@ -197,9 +247,9 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
           // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
           style: function(feature) {
             switch (feature.properties.COLOR) {
-              case 1: return {fillColor: "#fd7575"};
-              case 2: return {fillColor: "#df2121"};
-              case 3: return {fillColor: "#a60000"}
+              case 1: return {fillColor: "#fd7575", radius: 3};
+              case 2: return {fillColor: "#df2121", radius: 6};
+              case 3: return {fillColor: "#a60000", radius: 10}
             }
           }
           // filter: filter1
@@ -210,11 +260,20 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
     // turn to page 4
     $('button.next3').click(function(){
       map.removeLayer(Pedestrian);
-      map.setZoom(11);
       $('button.previous2').hide();
       $('button.previous3').show();
       $('button.next4').show();
       $('button.next3').hide();
+
+      $('#page1').hide();
+      $('#page2').hide();
+      $('#page3').hide();
+      $('#page4').show();
+      $('#page5').hide();
+
+      $('#legend-bike').hide();
+      $('#legend-ped').hide();
+
       //load bike counts and pedestrian counts
       $.ajax(bike).done(function(data){
         var parsedBike = parse(data);
@@ -251,9 +310,9 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
             // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
             style: function(feature) {
               switch (feature.properties.COLOR) {
-                case 1: return {fillColor: "#fd7575"};
-                case 2: return {fillColor: "#df2121"};
-                case 3: return {fillColor: "#a60000"}
+                case 1: return {fillColor: "#fd7575", radius: 3};
+                case 2: return {fillColor: "#df2121", radius: 6};
+                case 3: return {fillColor: "#a60000", radius: 10}
               }
             }
             // filter: filter1
@@ -264,9 +323,9 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
             // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
             style: function(feature) {
               switch (feature.properties.COLOR) {
-                case 1: return {fillColor: "#8d97f3"};
-                case 2: return {fillColor: "#4855d4"};
-                case 3: return {fillColor: "#1a269f"}
+                case 1: return {fillColor: "#8d97f3", radius: 3};
+                case 2: return {fillColor: "#4855d4", radius: 6};
+                case 3: return {fillColor: "#1a269f", radius: 10}
               }
             }
             // filter: filter1
@@ -284,7 +343,18 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
       $('button.previous3').hide();
       $('button.next4').hide();
       $('button.next3').show();
+
+      $('#page1').hide();
+      $('#page2').hide();
+      $('#page3').show();
+      $('#page4').hide();
+      $('#page5').hide();
+
+
       $.ajax(pedestrian).done(function(data){
+        $('#legend-bike').hide();
+        $('#legend-ped').show();
+
         var parsedPedestrian = parse(data);
 
         _.each(parsedPedestrian.features, function(feature) {
@@ -304,9 +374,9 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
           // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
           style: function(feature) {
             switch (feature.properties.COLOR) {
-              case 1: return {fillColor: "#8d97f3"};
-              case 2: return {fillColor: "#4855d4"};
-              case 3: return {fillColor: "#1a269f"}
+              case 1: return {fillColor: "#8d97f3", radius: 3};
+              case 2: return {fillColor: "#4855d4", radius: 6};
+              case 3: return {fillColor: "#1a269f", radius: 10}
             }
           }
           // filter: filter1
@@ -319,6 +389,12 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
       $('button.previous3').hide();
       $('button.previous4').show();
       $('button.next4').hide();
+
+      $('#page1').hide();
+      $('#page2').hide();
+      $('#page3').hide();
+      $('#page4').hide();
+      $('#page5').show();
       //zoom to Philadelphia
       $.ajax(district).done(function(data){
         var parsedDistrict = parse(data);
@@ -326,7 +402,8 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
           filter: central,
           style: polygon
         }).addTo(map)
-        map.setZoom(13);
+        map.fitBounds(District.getBounds())
+        // map.setZoom(13);
       })
     })
 
@@ -335,18 +412,15 @@ $(document).ready(function() {$.ajax(trail).done(function(data){
       $('button.previous4').hide();
       $('button.previous3').show();
       $('button.next4').show();
+
+      $('#page1').hide();
+      $('#page2').hide();
+      $('#page3').hide();
+      $('#page4').show();
+      $('#page5').hide();
       map.removeLayer(District);
-      map.setZoom(11);
+      map.setZoom(10);
     })
 
   });
 });
-
-
-/* things to do:
-add popup
-change sidebar text when clicked
-add buttons
-remove and add new data when clicked
-zoom in when location clicked
-*/
