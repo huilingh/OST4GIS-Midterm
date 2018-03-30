@@ -127,7 +127,7 @@ $(document).ready(function() {
 
         Bike = L.geoJson(parsedBike, {
           pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, BikeMarker);},
-          // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
+          onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.ROAD)},
           style: function(feature) {
             switch (feature.properties.COLOR) {
               case 1: return {fillColor: "#fd7575", radius: 3};
@@ -197,7 +197,7 @@ $(document).ready(function() {
 
         Pedestrian = L.geoJson(parsedPedestrian, {
           pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, PedMarker);},
-          // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
+          onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.ROAD)},
           style: function(feature) {
             switch (feature.properties.COLOR) {
               case 1: return {fillColor: "#8d97f3", radius: 3};
@@ -244,7 +244,7 @@ $(document).ready(function() {
 
         Bike = L.geoJson(parsedBike, {
           pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, BikeMarker);},
-          // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
+          onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.ROAD)},
           style: function(feature) {
             switch (feature.properties.COLOR) {
               case 1: return {fillColor: "#fd7575", radius: 3};
@@ -307,7 +307,7 @@ $(document).ready(function() {
 
           Bike = L.geoJson(parsedBike, {
             pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, BikeMarker);},
-            // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
+            onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.ROAD)},
             style: function(feature) {
               switch (feature.properties.COLOR) {
                 case 1: return {fillColor: "#fd7575", radius: 3};
@@ -320,7 +320,7 @@ $(document).ready(function() {
 
           Pedestrian = L.geoJson(parsedPedestrian, {
             pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, PedMarker);},
-            // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
+            onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.ROAD)},
             style: function(feature) {
               switch (feature.properties.COLOR) {
                 case 1: return {fillColor: "#8d97f3", radius: 3};
@@ -371,7 +371,7 @@ $(document).ready(function() {
 
         Pedestrian = L.geoJson(parsedPedestrian, {
           pointToLayer: function (feature, latlng) {return L.circleMarker(latlng, PedMarker);},
-          // onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.FACIL_NAME)},
+          onEachFeature: function(feature, layer) {layer.bindPopup(feature.properties.ROAD)},
           style: function(feature) {
             switch (feature.properties.COLOR) {
               case 1: return {fillColor: "#8d97f3", radius: 3};
